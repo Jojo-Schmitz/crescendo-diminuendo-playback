@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //	Creates note velocities for crescendos and diminuendos
-//	Version 0.1 - 2011
+//	Version 0.2 - 2011
 //
 //	By Tory Gaurnier, 2011
 //
@@ -39,9 +39,11 @@ function setDynamics() {
 	selectionEnd.goToSelectionEnd();
 
 //Find how many notes/chords are in selection
-	for(numberOfChords = 0; cursor.tick() < selectionEnd.tick(); numberOfChords++) {
+	while(cursor.tick() < selectionEnd.tick()) {
+		if(cursor.isChord()) {
+			numberOfChords++;
+		}
 		cursor.next();
-		while(cursor.isRest()) {cursor.next();}
 	}
 	
 //Get starting and ending velocities
@@ -54,24 +56,34 @@ function setDynamics() {
 			}
 		}
 		if(i == numberOfChords) {
+			if(cursor.isChord()) {
 				endingVelocity = cursor.chord().note(0).velocity;
+			}
 		}
-	cursor.next();
-	while(cursor.isRest()) {cursor.next();}
+		cursor.next();
+		while(!cursor.isChord()) {cursor.next();}
 	}
+
 //Set increment value
-	increment = Math.round((endingVelocity - startingVelocity) / numberOfChords);
+	if(Math.round((endingVelocity - startingVelocity) / numberOfChords) == 0) {
+		increment = 1;
+	}
+	else {
+		increment = Math.round((endingVelocity - startingVelocity) / numberOfChords);
+	}
 
 //Set velocity to notes
-	cursor.goToSelectionStart();
-	for(var i = 1; i <= numberOfChords; ++i) {
-		while(cursor.isRest()) {cursor.next();}
+	
+cursor.goToSelectionStart();
+	for(var i = 1; i <= numberOfChords; i++) {
+		while(!cursor.isChord()) {cursor.next();}
 		if(cursor.isChord()) {
 			var chord = cursor.chord();
 			var n = chord.notes;
 			for(var I = 0; I < n; I++) {
 				if(i != 1 && i != numberOfChords) {
-					chord.note(I).velocity = startingVelocity + (increment * i);
+					note = chord.note(I);
+					note.velocity = startingVelocity + (increment * i);
 				}
 			}
 		}
