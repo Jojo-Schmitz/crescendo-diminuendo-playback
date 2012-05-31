@@ -1,4 +1,6 @@
-Sets velocity values for crescendos and diminuendos.
+Pluging for MuseScore 1.1+ to et velocity values for crescendos and diminuendos.
+-----
+
 To use, you must set the velocity value of the first and last notes,
 either manually by right clicking on the note and going to properties,
 or the preferred way, but simply using one of the dynamic markings
