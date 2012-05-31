@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //	Creates note velocities for crescendos and diminuendos
-//	Version 0.2 - 2011
+//	Version 0.3 - 2011
 //
 //	By Tory Gaurnier, 2011
 //
@@ -25,9 +25,6 @@
 //=============================================================================
 
 function setDynamics() {
-	messageBox = new QMessageBox();
-	messageBox.setWindowTitle("Message Box");
-	
 	var cursor = new Cursor(curScore);
 	var selectionEnd = new Cursor(curScore);
 	var numberOfChords = 0;
@@ -95,35 +92,26 @@ function init() {
 
 }
 function run() {
-	setDynamics();
+	if(mscoreVersion >= 10100) {
+		setDynamics();
+	}
+	else {
+		messageBox = new QMessageBox();
+		messageBox.setWindowTitle("Message Box");
+		messageBox.text = "Sorry, but you need MuseScore version 1.1 or higher to use this plugin, please update.";
+		messageBox.exec();
+	}
 };
 function close() {
 
 };
 
 mscorePlugin = {
-	majorVersion: 1.1,
-	minorVersion: 1.1,
+	majorVersion: 1,
+	minorVersion: 1,
 	menu: 'Plugins.Create Crescendo or Diminuendo',
 	init: init,
 	run: run,
 	onClose: close
 };
 mscorePlugin;
-/**
-//read the UI file and create a form out of it
-var loader = new QUiLoader(null);
-var file = new QFile(pluginPath + "/crescendo or diminuendo.ui");
-file.open(QIODevice.OpenMode(QIODevice.ReadOnly, QIODevice.Text));
-form = loader.load(file, null);
-
-//initialize some widget value if necessary
-form.verticalLayoutWidget.myLabel.text = curScore.title;
-form.verticalLayoutWidget.myLabel2.text = curScore.composer;
-
-//connect signal
-form.searchBtn.clicked.connect(doSomething);
-form.closeBtn.clicked.connect(close);
-
-//show the form
-form.show();*/
