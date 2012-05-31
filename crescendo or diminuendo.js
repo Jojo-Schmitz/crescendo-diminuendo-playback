@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //   Creates note velocities for crescendos and diminuendos
-//   Version 0.6 - 2012
+//   Version 0.7 - 2012
 //
 //   By Tory Gaurnier, 2011
 //   By Joachim Schmitz, 2012
@@ -41,26 +41,30 @@ function run() {
       return;
    }
 
+   // real work can start...
    var cursor = new Cursor(curScore);
    var selectionEnd = new Cursor(curScore);
    
    cursor.goToSelectionStart();
    selectionEnd.goToSelectionEnd();
+
    var startStaff = cursor.staff;
    var endStaff   = selectionEnd.staff;
+
+   curScore.startUndo();
+   // for all staves in selection
    for (var staff = startStaff; staff < endStaff; staff++) {
+      // and all voices in staff
       for (var voice = 0; voice < 4; voice++) {
          var numberOfChords = 0;
          var startingVelocity = 0;
          var endingVelocity = 0;
 
-         cursor.goToSelectionStart();
-         selectionEnd.goToSelectionEnd();
-         // the above two calls reset voice (to 0) and staff
-         cursor.voice = voice;
-         cursor.staff = staff;
-
          // Find how many notes/chords are in the selection
+         cursor.goToSelectionStart();
+         cursor.voice = voice; // voice has to be set after goTo
+         cursor.staff = staff; // staff has to be set after goTo
+
          while (cursor.tick() < selectionEnd.tick()) {
             if (cursor.isChord()) {
                numberOfChords++;
@@ -76,14 +80,14 @@ function run() {
          if (numberOfChords == 0)
             break;
 
-         // Calculate increment value
+         // Calculate increment/decrement value
          var increment = (endingVelocity - startingVelocity) / numberOfChords;
 
          // Set velocity to all notes of all chords
          cursor.goToSelectionStart();
-         // the above call resets voice (to 0) and staff
-         cursor.voice = voice;
-         cursor.staff = staff;
+         cursor.voice = voice; // voice has to be set after goTo
+         cursor.staff = staff; // staff has to be set after goTo
+
          for (var c = 1; c <= numberOfChords; c++) {
             while (!cursor.isChord())
                cursor.next();
@@ -96,6 +100,8 @@ function run() {
          } // chord loop 
       } // voice loop
    } // staff loop
+   curScore.endUndo();
+   
 };
 
 function close() {
