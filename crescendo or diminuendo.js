@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //	Creates note velocities for crescendos and diminuendos
-//	Version 0.4 - 2012
+//	Version 0.5 - 2012
 //
 //	By Tory Gaurnier, 2011
 //	By Joachim Schmitz, 2012
@@ -43,44 +43,50 @@ function run() {
 
 	var cursor = new Cursor(curScore);
 	var selectionEnd = new Cursor(curScore);
-	var numberOfChords = 0;
-	var startingVelocity = 0;
-	var endingVelocity = 0;
-	var increment = 0;
 
-	cursor.goToSelectionStart();
-	selectionEnd.goToSelectionEnd();
+	for (var voice = 0; voice < 4; voice++) {
+		var numberOfChords = 0;
+		var startingVelocity = 0;
+		var endingVelocity = 0;
 
-	// Find how many notes/chords are in the selection
-	while (cursor.tick() < selectionEnd.tick()) {
-		if (cursor.isChord()) {
-			numberOfChords++;
-			// Get starting and ending velocities
-			if (startingVelocity == 0)
-				startingVelocity = cursor.chord().note(0).velocity;
-			endingVelocity = cursor.chord().note(0).velocity;
-		}
-		cursor.next();
-	}
-	
-	// Nothing to do
-	if (numberOfChords == 0)
-		return;
+		cursor.goToSelectionStart();
+		selectionEnd.goToSelectionEnd();
+        	// the above two calls reset voice to 0
+		cursor.voice = voice;
 
-	// Calculate increment value
-	increment = (endingVelocity - startingVelocity) / numberOfChords;
-
-	// Set velocity to all notes of all chords
-	cursor.goToSelectionStart();
-	for (var c = 1; c <= numberOfChords; c++) {
-		while (!cursor.isChord())
-			cursor.next();
-		if (c != 1 && c != numberOfChords) {
-			for (var n = 0; n < cursor.chord().notes; n++) {
-				cursor.chord().note(n).velocity = startingVelocity + Math.round(increment * c);
+		// Find how many notes/chords are in the selection
+		while (cursor.tick() < selectionEnd.tick()) {
+			if (cursor.isChord()) {
+				numberOfChords++;
+				// Get starting and ending velocities
+				if (startingVelocity == 0)
+					startingVelocity = cursor.chord().note(0).velocity;
+				endingVelocity = cursor.chord().note(0).velocity;
 			}
+			cursor.next();
 		}
-		cursor.next();
+	
+		// Nothing to do
+		if (numberOfChords == 0)
+			return;
+
+		// Calculate increment value
+		var increment = (endingVelocity - startingVelocity) / numberOfChords;
+
+		// Set velocity to all notes of all chords
+		cursor.goToSelectionStart();
+        	// the above call resets voice to 0
+        	cursor.voice = voice;
+		for (var c = 1; c <= numberOfChords; c++) {
+			while (!cursor.isChord())
+				cursor.next();
+			if (c != 1 && c != numberOfChords) {
+				for (var n = 0; n < cursor.chord().notes; n++) {
+					cursor.chord().note(n).velocity = startingVelocity + Math.round(increment * c);
+				}
+			}
+			cursor.next();
+		}
 	}
 };
 
