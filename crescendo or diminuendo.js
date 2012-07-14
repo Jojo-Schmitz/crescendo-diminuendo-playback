@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //   Creates note velocities for crescendos and diminuendos
-//   Version 0.7 - 2012
+//   Version 0.8 - 2012
 //
 //   By Tory Gaurnier, 2011
 //   By Joachim Schmitz, 2012
@@ -81,7 +81,7 @@ function run() {
             break;
 
          // Calculate increment/decrement value
-         var increment = (endingVelocity - startingVelocity) / numberOfChords;
+         var inc = (endingVelocity - startingVelocity) / numberOfChords;
 
          // Set velocity to all notes of all chords
          cursor.goToSelectionStart();
@@ -91,9 +91,11 @@ function run() {
          for (var c = 1; c <= numberOfChords; c++) {
             while (!cursor.isChord())
                cursor.next();
+
             if (c != 1 && c != numberOfChords) {
                for (var n = 0; n < cursor.chord().notes; n++) {
-                  cursor.chord().note(n).velocity = startingVelocity + Math.round(increment * c);
+                  cursor.chord().note(n).velocity = startingVelocity
+                                                  + Math.round(inc * c);
                } // note loop
             } 
             cursor.next();
@@ -101,7 +103,6 @@ function run() {
       } // voice loop
    } // staff loop
    curScore.endUndo();
-   
 };
 
 function close() {
