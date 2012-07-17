@@ -29,6 +29,8 @@ import QtQuick 1.0
 import MuseScore 1.0
 
 MuseScore {
+   version: "0.8"
+   description: "This plugin creates note velocities for crescendo and diminuendo"
    menuPath: 'Plugins.Create Crescendo or Diminuendo'
 
    onRun: {
