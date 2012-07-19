@@ -25,6 +25,10 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
+// Set to true, if you want this plugin to color all notes blue it changed 
+// velocity on. Use the blacknotes plugin to turn them black as needed
+var colorit = false; 
+
 function init() {
 };
 
@@ -96,6 +100,8 @@ function run() {
                for (var n = 0; n < cursor.chord().notes; n++) {
                   cursor.chord().note(n).velocity = startingVelocity
                                                   + Math.round(inc * c);
+                  if (colorit)
+                     cursor.chord().note(n).color= new QColor(26,12,255); // blue
                } // note loop
             } 
             cursor.next();
