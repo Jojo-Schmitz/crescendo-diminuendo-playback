@@ -5,7 +5,7 @@
 //  Crescendo and Diminuendo plugin
 //
 //   Creates note velocities for crescendos and diminuendos
-//   Version 0.8 - 2012
+//   Version 0.9 - 2012
 //
 //   By Tory Gaurnier, 2011
 //   By Joachim Schmitz, 2012
@@ -57,7 +57,7 @@ MuseScore {
 
          while (cursor.segment) { //?
          //while (cursor.tick < selectionEnd.tick) {
-            if (cursor.element && cursor.element.type == MScore.CHORD) {
+            if (cursor.element && cursor.element.type == Element.CHORD) {
                numberOfChords++;
                // Get starting and ending velocities
                if (startingVelocity == 0)
@@ -82,7 +82,7 @@ console.log("inc: " + inc);
          cursor.rewind(1); // start of selection
 
          for (var c = 1; c <= numberOfChords; c++) {
-            while (cursor.element && cursor.element.type != MScore.CHORD)
+            while (cursor.element && cursor.element.type != Element.CHORD)
                cursor.next();
 
             if (c != 1 && c != numberOfChords) {
