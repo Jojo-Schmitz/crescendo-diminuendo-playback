@@ -25,7 +25,7 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-import QtQuick 2.0
+import QtQuick 1.0
 import MuseScore 1.0
 
 MuseScore {
@@ -33,15 +33,11 @@ MuseScore {
    description: "This plugin creates note velocities for crescendo and diminuendo"
    menuPath: 'Plugins.Create Crescendo or Diminuendo'
 
-   Cursor {
-      id: cursor
-      score: curScore
-   }
    onRun: {
       if (typeof curScore === 'undefined')
          Qt.quit();
 
-      //var cursor = curScore.newCursor();
+      var cursor = curScore.newCursor();
       var selectionEnd = curScore.newCursor();
 
       cursor.rewind(1); // start of selection
