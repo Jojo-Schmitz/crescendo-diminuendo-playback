@@ -5,10 +5,10 @@
 //  Crescendo and Diminuendo plugin
 //
 //   Creates note velocities for crescendos and diminuendos
-//   Version 0.9 - 2012
+//   Version 0.9 - 2013
 //
 //   By Tory Gaurnier, 2011
-//   By Joachim Schmitz, 2012
+//   By Joachim Schmitz, 2012, 2013
 //
 //  MuseScore: Copyright (C)2008 Werner Schweer and others
 //
@@ -29,7 +29,7 @@ import QtQuick 2.0
 import MuseScore 1.0
 
 MuseScore {
-   version: "0.8"
+   version: "0.9"
    description: "This plugin creates note velocities for crescendo and diminuendo"
    menuPath: 'Plugins.Create Crescendo or Diminuendo'
 
