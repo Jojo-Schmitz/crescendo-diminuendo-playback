@@ -6,7 +6,7 @@ either manually by right clicking on the note and going to properties,
 or the preferred way, but simply using one of the dynamic markings
 such as Pianissimo, Forte, Mezzoforte, etc.
 
-Select the notes from FIRST to LAST, then just click on the plugin and
+Select the notes from FIRST to LAST (an 'extended' selection, marked with a blue rectangle), then just click on the plugin and
 it will automatically set the velocity values. The only velocity values
 that are important are the first and last, the ones in between will
 automatically be changed regardless of current value.
