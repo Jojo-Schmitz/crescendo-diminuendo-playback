@@ -5,10 +5,10 @@
 //  Crescendo and Diminuendo plugin
 //
 //   Creates note velocities for crescendos and diminuendos
-//   Version 0.9 - 2013
+//   Version 0.9 - 2014
 //
 //   By Tory Gaurnier, 2011
-//   By Joachim Schmitz, 2012, 2013
+//   By Joachim Schmitz, 2012-2014
 //
 //  MuseScore: Copyright (C)2008 Werner Schweer and others
 //
@@ -71,24 +71,24 @@ console.log("startingVelocity: " + startingVelocity);
 console.log("endingVelocity: " + endingVelocity);
 console.log("numberOfChords: " + numberOfChords);
          // Nothing to do
-         if (numberOfChords == 0)
+         if (numberOfChords <= 2)
             break;
 
          // Calculate increment/decrement value
-         var inc = (endingVelocity - startingVelocity) / numberOfChords;
+         var inc = (endingVelocity - startingVelocity) / (numberOfChords -1);
 console.log("inc: " + inc);
 
          // Set velocity to all notes of all chords
          cursor.rewind(1); // start of selection
 
-         for (var c = 1; c <= numberOfChords; c++) {
+         for (var c = 1; c < numberOfChords; c++) { // end befor last chord
             while (cursor.element && cursor.element.type != Element.CHORD)
                cursor.next();
 
-            if (c != 1 && c != numberOfChords) {
+            if (c != 1) { // skip 1st chord
                for (var n = 0; n < cursor.element.notes; n++) {
                   cursor.element.notes[n].veloOffset = startingVelocity
-                                                     + Math.round(inc * c);
+                                                     + Math.round(inc * (c-1));
 console.log("setting velocity to: " + cursor.element.notes[n].veloOffset);
                } // note loop
             } 
