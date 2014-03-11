@@ -70,22 +70,22 @@ MuseScore {
 console.log("startingVelocity: " + startingVelocity);
 console.log("endingVelocity: " + endingVelocity);
 console.log("numberOfChords: " + numberOfChords);
-         // Nothing to do
+         // Nothing to do for this voice
          if (numberOfChords <= 2)
-            break;
+            continue;
 
          // Calculate increment/decrement value
          var inc = (endingVelocity - startingVelocity) / (numberOfChords -1);
 console.log("inc: " + inc);
 
          // Set velocity to all notes of all chords
-         cursor.rewind(1); // start of selection
+         cursor.rewind(1); // Start of selection
 
-         for (var c = 1; c < numberOfChords; c++) { // end befor last chord
+         for (var c = 1; c < numberOfChords; c++) { // End befor last chord
             while (cursor.element && cursor.element.type != Element.CHORD)
                cursor.next();
 
-            if (c != 1) { // skip 1st chord
+            if (c != 1) { // Skip 1st chord
                for (var n = 0; n < cursor.element.notes; n++) {
                   cursor.element.notes[n].veloOffset = startingVelocity
                                                      + Math.round(inc * (c-1));

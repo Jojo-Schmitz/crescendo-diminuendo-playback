@@ -80,9 +80,9 @@ function run() {
             cursor.next();
          }
    
-         // Nothing to do
+         // Nothing to do for this voice
          if (numberOfChords <= 2)
-            break;
+            continue; // Over to next voice
 
          // Calculate increment/decrement value
          var inc = (endingVelocity - startingVelocity) / (numberOfChords - 1);
@@ -92,11 +92,11 @@ function run() {
          cursor.voice = voice; // voice has to be set after goTo
          cursor.staff = staff; // staff has to be set after goTo
 
-         for (var c = 1; c < numberOfChords; c++) { // end before last chord
+         for (var c = 1; c < numberOfChords; c++) { // End before last chord
             while (!cursor.isChord())
                cursor.next();
 
-            if (c != 1 ) { // skip 1st chord
+            if (c != 1 ) { // Skip 1st chord
                for (var n = 0; n < cursor.chord().notes; n++) {
                   cursor.chord().note(n).velocity = startingVelocity
                                                   + Math.round(inc * (c-1));
